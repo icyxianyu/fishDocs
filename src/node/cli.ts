@@ -1,4 +1,5 @@
 import cac from 'cac';
+import { build } from './build';
 import { createDevServer } from './dev';
 
 
@@ -14,8 +15,8 @@ cli.command('dev [root]', 'start dev server').
         server.printUrls();
     })
 
-cli.command('build [root]', 'start dev server').
+cli.command('build [root]', 'start biild').
     action(async (root) => {
-        console.log(root)
+        await build(root)
     })
 cli.parse();
