@@ -92,6 +92,6 @@ export async function build(root: string) {
 
    const { renderInNode } = require(serverEntryPATH);
 
-   await renderPage(renderInNode,root,clientBundle)
+   await renderPage(renderInNode,root,clientBundle);
 
 }
