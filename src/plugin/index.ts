@@ -1,0 +1,1 @@
+export { pluginIndexHtml } from "./indexHTML"
