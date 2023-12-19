@@ -5,4 +5,4 @@
 
 然后 `pnpm start` 开启tsc监听 会产生dist文件夹
 
-最后 `island dev` 即可运行  
+最后 `island dev` 即可运行  test
