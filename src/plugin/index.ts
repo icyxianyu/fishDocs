@@ -1,1 +1,1 @@
-export { pluginIndexHtml } from "./indexHTML"
+export { pluginIndexHtml } from './indexHTML';

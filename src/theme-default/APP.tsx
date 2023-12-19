@@ -1,5 +1,5 @@
-import { Layout } from "."
+import { Layout } from '.';
 
 export function App() {
-    return (<Layout />)
+  return <Layout />;
 }
