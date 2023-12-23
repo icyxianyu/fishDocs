@@ -1,11 +1,14 @@
-import * as path from "path"
+import path from 'path';
 
+export const ROOTROAD = path.join(__dirname, '..');
 
-export const ROOTROAD = path.join(__dirname, '..', '..')
-
-export const SRCPATH = path.join(ROOTROAD, 'src')
+export const SRCPATH = path.join(ROOTROAD, 'src');
 
 export const DISTPATH = path.join(ROOTROAD, 'dist');
+
+export const BUILDPATH = path.join(ROOTROAD, 'build');
+
+export const BUILDTEMPPATH = path.join(BUILDPATH, '.temp');
 
 export const TEMPLATEPATH = path.join(ROOTROAD, 'template.html');
 

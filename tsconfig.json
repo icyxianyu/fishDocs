@@ -4,6 +4,8 @@
         "module": "commonjs",
         "outDir": "dist",
         "rootDir": "src",
+        "baseUrl": "src",
         "target": "ESNext",
+        "esModuleInterop": true
     }
 }
