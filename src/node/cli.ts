@@ -6,11 +6,17 @@ import { createDevServer } from './dev';
 const cli = cac('island').version('0.0.1').help();
 
 cli.command('dev [root]', 'start dev server').action(async (root) => {
-  const server = await createDevServer(root);
-  // 启动服务
-  await server.listen();
+  const createServer = async () => {
+    const server = await createDevServer(root, async () => {
+      console.log('rebuild');
+      await server.close();
+      await createServer();
+    });
+    await server.listen();
+    server.printUrls();
+  };
 
-  server.printUrls();
+  await createServer();
 });
 
 cli.command('build [root]', 'start biild').action(async (root) => {

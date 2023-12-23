@@ -1,18 +1,24 @@
 import { createServer } from 'vite';
-import { pluginIndexHtml } from '../plugin';
+import { pluginIndexHtml, pluginConfig } from '../plugin';
 import pluginReact from '@vitejs/plugin-react';
 import { resolveConfig } from './config';
-
-export async function createDevServer(root: string) {
-  const [configPath, userConfig] = await resolveConfig(
-    root,
-    'serve',
-    'development'
-  );
-  console.log('configPath', configPath, 'userConfig', userConfig);
-
+import { ROOTROAD } from '../constants';
+export async function createDevServer(
+  root: string,
+  restartServer: () => Promise<void>
+) {
+  const userConfig = await resolveConfig(root, 'serve', 'development');
   return createServer({
     root,
-    plugins: [pluginIndexHtml(), pluginReact()]
+    server: {
+      fs: {
+        allow: [ROOTROAD]
+      }
+    },
+    plugins: [
+      pluginIndexHtml(),
+      pluginReact(),
+      pluginConfig(userConfig, restartServer)
+    ]
   });
 }
