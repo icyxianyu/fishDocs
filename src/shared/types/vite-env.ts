@@ -3,3 +3,9 @@ declare module 'virtual:fishDocs/config' {
   const siteData: UserConfig;
   export default siteData;
 }
+
+declare module 'virtual:fishDocs/routes' {
+  import { RouteObject } from 'react-router-dom';
+  const routes: RouteObject[];
+  export { routes };
+}

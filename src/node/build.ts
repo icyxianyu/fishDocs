@@ -1,4 +1,4 @@
-import { build as viteBuild } from 'vite';
+import { build as viteBuild, InlineConfig } from 'vite';
 import {
   BUILDPATH,
   BUILDTEMPPATH,
@@ -8,48 +8,41 @@ import {
 import { join } from 'path';
 import fs from 'fs-extra';
 import { pathToFileURL } from 'url';
+import { SiteConfig } from 'shared/types';
+import pluginReact from '@vitejs/plugin-react';
+import { pluginConfig } from '../plugin/config';
 
-export async function bundle(root: string) {
+export async function bundle(root: string, config: SiteConfig) {
   try {
     console.log(' 1. bundle client and server');
     // 打包客户端
-    const clientResult = async () => {
-      return viteBuild({
-        root,
-        mode: 'production',
-        build: {
-          outDir: join(BUILDTEMPPATH, 'client'),
-          rollupOptions: {
-            input: CLIENTENTRY,
-            output: {
-              format: 'esm'
-            }
-          }
-        }
-      });
-    };
 
-    // 打包服务端
-    const serverResult = async () => {
-      return viteBuild({
-        root,
-        mode: 'production',
-        build: {
-          ssr: true,
-          outDir: join(BUILDTEMPPATH, 'server'),
-          rollupOptions: {
-            input: SERVERENTRY,
-            output: {
-              format: 'cjs'
-            }
+    const resolveViteConfig = (isServer: boolean): InlineConfig => ({
+      mode: 'production',
+      root,
+      plugins: [pluginReact(), pluginConfig(config)],
+      ssr: {
+        // 注意加上这个配置，防止 cjs 产物中 require ESM 的产物，因为 react-router-dom 的产物为 ESM 格式
+        noExternal: ['react-router-dom']
+      },
+      build: {
+        minify: false,
+        ssr: isServer,
+        outDir: isServer
+          ? join(BUILDTEMPPATH, 'server')
+          : join(BUILDTEMPPATH, 'client'),
+        rollupOptions: {
+          input: isServer ? SERVERENTRY : CLIENTENTRY,
+          output: {
+            format: isServer ? 'cjs' : 'esm'
           }
         }
-      });
-    };
+      }
+    });
 
     const [clientBundle, serverBundle] = await Promise.all([
-      clientResult(),
-      serverResult()
+      viteBuild(resolveViteConfig(false)),
+      viteBuild(resolveViteConfig(true))
     ]);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -95,12 +88,12 @@ export const renderPage = async (
   await fs.remove(BUILDTEMPPATH);
 };
 
-export async function build(root: string) {
+export async function build(root: string, config: SiteConfig) {
   // bundle 逻辑 打包client端和server端;
   // 引入 server-entry 模块
   // 服务端渲染，产出HTML
 
-  const [clientBundle] = await bundle(root);
+  const [clientBundle] = await bundle(root, config);
 
   const serverEntryPATH = join(BUILDTEMPPATH, 'server', 'server-entry.js');
 

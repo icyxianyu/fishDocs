@@ -1,17 +1,10 @@
-import { useState } from 'react';
-
+import { Content } from '../runtime/Content';
 export function Layout() {
-  const [state, setState] = useState(2);
   return (
     <div>
-      <div>{state}</div>
-      <button
-        onClick={() => {
-          setState(state + 1);
-        }}
-      >
-        点击加1
-      </button>
+      <h1>Common Content</h1>
+      <h1>Doc Content</h1>
+      <Content />
     </div>
   );
 }

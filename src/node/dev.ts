@@ -3,13 +3,15 @@ import { pluginIndexHtml, pluginConfig } from '../plugin';
 import pluginReact from '@vitejs/plugin-react';
 import { resolveConfig } from './config';
 import { ROOTROAD } from '../constants';
+import { pluginRoutes } from 'plugin/routes';
 export async function createDevServer(
   root: string,
   restartServer: () => Promise<void>
 ) {
   const userConfig = await resolveConfig(root, 'serve', 'development');
+
   return createServer({
-    root,
+    root: ROOTROAD,
     server: {
       fs: {
         allow: [ROOTROAD]
@@ -17,8 +19,15 @@ export async function createDevServer(
     },
     plugins: [
       pluginIndexHtml(),
-      pluginReact(),
-      pluginConfig(userConfig, restartServer)
+
+      pluginReact({
+        jsxRuntime: 'automatic'
+      }),
+      pluginConfig(userConfig, restartServer),
+
+      pluginRoutes({
+        root: userConfig.root
+      })
     ]
   });
 }

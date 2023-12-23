@@ -1,11 +1,13 @@
 import { normalizePath, PluginOption } from 'vite';
 import { SiteConfig } from '../shared/types/index';
+import { ROOTROAD } from '../constants';
+import { join } from 'path';
 
 const SITE_DATA_ID = 'virtual:fishDocs/config';
 
 export function pluginConfig(
   config: SiteConfig,
-  restartServer: () => Promise<void>
+  restartServer?: () => Promise<void>
 ): PluginOption {
   return {
     name: 'virtual:fishDocs/config',
@@ -19,6 +21,7 @@ export function pluginConfig(
         return `export default ${JSON.stringify(config.siteData)}`;
       }
     },
+    // 监听配置文件的变化
     async handleHotUpdate(ctx) {
       const path = [normalizePath(config.configPath)];
       console.log(path);
@@ -27,6 +30,17 @@ export function pluginConfig(
         console.log('config文件修改');
         await restartServer();
       }
+    },
+    // 重写vite的配置
+    config() {
+      return {
+        root: ROOTROAD,
+        resolve: {
+          alias: {
+            '@runtime': join(ROOTROAD, 'src', 'runtime', 'index.ts')
+          }
+        }
+      };
     }
   };
 }

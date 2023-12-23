@@ -1,9 +1,10 @@
 {
     "compilerOptions": {
         "jsx": "react-jsx",
-        "module": "commonjs",
+        "module": "ES2022",
+        "moduleResolution": "Node",
         "outDir": "dist",
-        "rootDir": "src",
+        "rootDir": "./",
         "baseUrl": "src",
         "target": "ESNext",
         "esModuleInterop": true

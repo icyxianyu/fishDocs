@@ -5,6 +5,7 @@ import { readFile } from 'fs/promises';
 export function pluginIndexHtml(): Plugin {
   return {
     name: 'plugin-index-html',
+    apply: 'serve',
     transformIndexHtml(html) {
       return {
         html,
@@ -13,7 +14,7 @@ export function pluginIndexHtml(): Plugin {
             tag: 'script',
             attrs: {
               type: 'module',
-              src: `@fs/${CLIENTENTRY}`
+              src: `/@fs/${CLIENTENTRY}`
             },
             injectTo: 'body'
           }
@@ -25,19 +26,19 @@ export function pluginIndexHtml(): Plugin {
         server.middlewares.use(async (req, res, next) => {
           // 读取template.html
           let template = await readFile(TEMPLATEPATH, 'utf-8');
-
           try {
             template = await server.transformIndexHtml(
-              req.url!,
+              req.url,
               template,
-              req.originalUrl!
+              req.originalUrl
             );
 
+            res.statusCode = 200;
             res.setHeader('Content-type', 'text/html');
 
             res.end(template);
           } catch (e) {
-            next(e);
+            return next(e);
           }
         });
       };
