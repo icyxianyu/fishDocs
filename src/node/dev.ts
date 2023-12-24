@@ -1,9 +1,7 @@
 import { createServer } from 'vite';
-import { pluginIndexHtml, pluginConfig } from '../plugin';
-import pluginReact from '@vitejs/plugin-react';
 import { resolveConfig } from './config';
 import { ROOTROAD } from '../constants';
-import { pluginRoutes } from 'plugin/routes';
+import { VitePlugin } from './pluginConfig';
 export async function createDevServer(
   root: string,
   restartServer: () => Promise<void>
@@ -17,17 +15,6 @@ export async function createDevServer(
         allow: [ROOTROAD]
       }
     },
-    plugins: [
-      pluginIndexHtml(),
-
-      pluginReact({
-        jsxRuntime: 'automatic'
-      }),
-      pluginConfig(userConfig, restartServer),
-
-      pluginRoutes({
-        root: userConfig.root
-      })
-    ]
+    plugins: VitePlugin(userConfig, restartServer)
   });
 }
