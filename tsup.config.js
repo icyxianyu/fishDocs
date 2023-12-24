@@ -8,8 +8,5 @@ export default defineConfig({
   format: ['cjs', 'esm'],
   shims: true,
   dts: true,
-  clean: true,
-  banner: {
-    js: 'import { createRequire } from "module"; const require = createRequire(import.meta.url);'
-  }
+  clean: true
 });
