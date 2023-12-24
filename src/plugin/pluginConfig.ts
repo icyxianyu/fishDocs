@@ -3,6 +3,8 @@ import { pluginIndexHtml, pluginConfig } from '.';
 import pluginReact from '@vitejs/plugin-react';
 import { createPluginMdx } from 'plugin/mdx';
 import { SiteConfig } from 'shared/types';
+import pluginUnocss from 'unocss/vite';
+import unocssOptions from './unocssOptions';
 
 export const VitePlugin = async (
   userConfig: SiteConfig,
@@ -10,6 +12,8 @@ export const VitePlugin = async (
   isServer?: boolean
 ) => {
   return [
+    pluginUnocss(unocssOptions),
+
     pluginIndexHtml(),
 
     pluginReact({
