@@ -16,10 +16,12 @@ export async function bundle(root: string, config: SiteConfig) {
     console.log(' 1. bundle client and server');
     // 打包客户端
 
-    const resolveViteConfig = (isServer: boolean): InlineConfig => ({
+    const resolveViteConfig = async (
+      isServer: boolean
+    ): Promise<InlineConfig> => ({
       mode: 'production',
       root,
-      plugins: VitePlugin(config),
+      plugins: await VitePlugin(config),
       ssr: {
         // 注意加上这个配置，防止 cjs 产物中 require ESM 的产物，因为 react-router-dom 的产物为 ESM 格式
         noExternal: ['react-router-dom']
@@ -40,8 +42,8 @@ export async function bundle(root: string, config: SiteConfig) {
     });
 
     const [clientBundle, serverBundle] = await Promise.all([
-      viteBuild(resolveViteConfig(false)),
-      viteBuild(resolveViteConfig(true))
+      viteBuild(await resolveViteConfig(false)),
+      viteBuild(await resolveViteConfig(true))
     ]);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

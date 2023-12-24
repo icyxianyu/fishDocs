@@ -15,6 +15,6 @@ export async function createDevServer(
         allow: [ROOTROAD]
       }
     },
-    plugins: VitePlugin(userConfig, restartServer)
+    plugins: await VitePlugin(userConfig, restartServer)
   });
 }
