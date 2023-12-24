@@ -6,7 +6,8 @@ import { SiteConfig } from 'shared/types';
 
 export const VitePlugin = async (
   userConfig: SiteConfig,
-  restartServer?: () => Promise<void>
+  restartServer?: () => Promise<void>,
+  isServer?: boolean
 ) => {
   return [
     pluginIndexHtml(),
@@ -17,7 +18,8 @@ export const VitePlugin = async (
     pluginConfig(userConfig, restartServer),
 
     pluginRoutes({
-      root: userConfig.root
+      root: userConfig.root,
+      ssr: isServer
     }),
     await createPluginMdx()
   ];

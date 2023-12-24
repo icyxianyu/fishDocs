@@ -5,11 +5,12 @@ import {
   CLIENTENTRY,
   SERVERENTRY
 } from '../constants';
-import { join } from 'path';
+import { dirname, join } from 'path';
 import fs from 'fs-extra';
 import { pathToFileURL } from 'url';
 import { SiteConfig } from 'shared/types';
 import { VitePlugin } from './pluginConfig';
+import { RouteObject } from 'react-router-dom';
 
 export async function bundle(root: string, config: SiteConfig) {
   try {
@@ -21,7 +22,7 @@ export async function bundle(root: string, config: SiteConfig) {
     ): Promise<InlineConfig> => ({
       mode: 'production',
       root,
-      plugins: await VitePlugin(config),
+      plugins: await VitePlugin(config, null, isServer),
       ssr: {
         // 注意加上这个配置，防止 cjs 产物中 require ESM 的产物，因为 react-router-dom 的产物为 ESM 格式
         noExternal: ['react-router-dom']
@@ -29,9 +30,7 @@ export async function bundle(root: string, config: SiteConfig) {
       build: {
         minify: false,
         ssr: isServer,
-        outDir: isServer
-          ? join(BUILDTEMPPATH, 'server')
-          : join(BUILDTEMPPATH, 'client'),
+        outDir: isServer ? join(root, '.temp') : join(root, 'build'),
         rollupOptions: {
           input: isServer ? SERVERENTRY : CLIENTENTRY,
           output: {
@@ -54,7 +53,8 @@ export async function bundle(root: string, config: SiteConfig) {
 }
 
 export const renderPage = async (
-  render: () => string,
+  render: (url: string) => string,
+  routes: RouteObject[],
   root: string,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   clientBundle: any
@@ -62,12 +62,16 @@ export const renderPage = async (
   const clientChunk = clientBundle.output.find(
     (chunk) => chunk.type === 'chunk' && chunk.isEntry
   );
+
   // 获取客户端打包后的文件名
   console.log('Rendering page in server side...');
-  const appHTML = render();
-  // 获取server端render出来的HTML；
-  const html = `
-     <!DOCTYPE html>
+
+  return Promise.all(
+    routes.map(async (route) => {
+      const path = route.path;
+      const appHTML = render(path);
+      const html = `
+        <!DOCTYPE html>
         <html>
         <head>
             <meta charset="utf-8">
@@ -77,30 +81,34 @@ export const renderPage = async (
         </head>
         <body>
             <div id="root">${appHTML}</div>
-            <script type="module" src="./${clientChunk?.fileName}"></script>
+            <script type="module" src="//${clientChunk?.fileName}"></script>
         </body>
         </html>
-     `.trim();
-  // 模版html
+   `.trim();
 
-  await fs.ensureDir(BUILDPATH);
-  await fs.writeFile(join(BUILDPATH, 'index.html'), html);
-  await fs.copy(join(BUILDTEMPPATH, 'client'), join(BUILDPATH));
-  await fs.remove(BUILDTEMPPATH);
+      const fileName = path.endsWith('/')
+        ? `${path}index.html`
+        : `${path}.html`;
+
+      await fs.ensureDir(join(root, 'build', dirname(fileName)));
+      await fs.writeFile(join(root, 'build', fileName), html);
+    })
+  );
 };
 
 export async function build(root: string, config: SiteConfig) {
   // bundle 逻辑 打包client端和server端;
-  // 引入 server-entry 模块
   // 服务端渲染，产出HTML
 
   const [clientBundle] = await bundle(root, config);
 
+  // 引入 server-entry 模块
   const serverEntryPATH = join(BUILDTEMPPATH, 'server', 'server-entry.js');
 
-  const { renderInNode } = await import(
+  const { renderInNode, routes } = await import(
     pathToFileURL(serverEntryPATH.toString()).href
   );
 
-  await renderPage(renderInNode, root, clientBundle);
+  // 服务端渲染
+  await renderPage(renderInNode, routes, root, clientBundle);
 }
