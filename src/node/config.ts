@@ -8,6 +8,35 @@ type RawConfig =
   | Promise<UserConfig>
   | (() => UserConfig | Promise<UserConfig>);
 
+// 汇聚成最终信息
+export async function resolveConfig(
+  root: string,
+  command: 'serve' | 'build',
+  mode: 'development' | 'production'
+) {
+  const [configPath, userConfig] = await resolveUserConfig(root, command, mode);
+  const siteConfig: SiteConfig = {
+    root,
+    configPath: configPath,
+    siteData: resolveSiteData(userConfig as UserConfig)
+  };
+
+  return siteConfig;
+}
+
+function getUserConfigPath(root: string) {
+  try {
+    const supportConfigFiles = ['config.ts', 'config.js'];
+    const configPath = supportConfigFiles
+      .map((file) => resolve(root, file))
+      .find(fs.pathExistsSync);
+    return configPath;
+  } catch (e) {
+    console.error(`Failed to load user config: ${e}`);
+    throw e;
+  }
+}
+
 // 解析配置文件
 export async function resolveUserConfig(
   root: string,
@@ -51,35 +80,6 @@ export function resolveSiteData(userConfig: UserConfig): UserConfig {
     themeConfig: userConfig.themeConfig || {},
     vite: userConfig.vite || {}
   };
-}
-
-// 汇聚成最终信息
-export async function resolveConfig(
-  root: string,
-  command: 'serve' | 'build',
-  mode: 'development' | 'production'
-) {
-  const [configPath, userConfig] = await resolveUserConfig(root, command, mode);
-  const siteConfig: SiteConfig = {
-    root,
-    configPath: configPath,
-    siteData: resolveSiteData(userConfig as UserConfig)
-  };
-
-  return siteConfig;
-}
-
-function getUserConfigPath(root: string) {
-  try {
-    const supportConfigFiles = ['config.ts', 'config.js'];
-    const configPath = supportConfigFiles
-      .map((file) => resolve(root, file))
-      .find(fs.pathExistsSync);
-    return configPath;
-  } catch (e) {
-    console.error(`Failed to load user config: ${e}`);
-    throw e;
-  }
 }
 
 export function defineConfig(config: UserConfig) {

@@ -9,7 +9,7 @@ import { dirname, join } from 'path';
 import fs from 'fs-extra';
 import { pathToFileURL } from 'url';
 import { SiteConfig } from 'shared/types';
-import { VitePlugin } from './pluginConfig';
+import { VitePlugin } from '../plugin/pluginConfig';
 import { RouteObject } from 'react-router-dom';
 
 export async function bundle(root: string, config: SiteConfig) {
@@ -44,7 +44,7 @@ export async function bundle(root: string, config: SiteConfig) {
       viteBuild(await resolveViteConfig(false)),
       viteBuild(await resolveViteConfig(true))
     ]);
-
+    console.log('2. bundle complete');
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return [clientBundle, serverBundle] as any;
   } catch (e) {
@@ -81,7 +81,7 @@ export const renderPage = async (
         </head>
         <body>
             <div id="root">${appHTML}</div>
-            <script type="module" src="//${clientChunk?.fileName}"></script>
+            <script type="module" src="./${clientChunk?.fileName}"></script>
         </body>
         </html>
    `.trim();
@@ -103,7 +103,7 @@ export async function build(root: string, config: SiteConfig) {
   const [clientBundle] = await bundle(root, config);
 
   // 引入 server-entry 模块
-  const serverEntryPATH = join(BUILDTEMPPATH, 'server', 'server-entry.js');
+  const serverEntryPATH = join(root, '.temp', 'server-entry.js');
 
   const { renderInNode, routes } = await import(
     pathToFileURL(serverEntryPATH.toString()).href

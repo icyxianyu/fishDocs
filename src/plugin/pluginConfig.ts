@@ -1,5 +1,5 @@
 import { pluginRoutes } from 'plugin/routes';
-import { pluginIndexHtml, pluginConfig } from '../plugin';
+import { pluginIndexHtml, pluginConfig } from '.';
 import pluginReact from '@vitejs/plugin-react';
 import { createPluginMdx } from 'plugin/mdx';
 import { SiteConfig } from 'shared/types';

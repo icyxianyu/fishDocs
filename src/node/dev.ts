@@ -1,7 +1,7 @@
 import { createServer } from 'vite';
 import { resolveConfig } from './config';
 import { ROOTROAD } from '../constants';
-import { VitePlugin } from './pluginConfig';
+import { VitePlugin } from '../plugin/pluginConfig';
 export async function createDevServer(
   root: string,
   restartServer: () => Promise<void>

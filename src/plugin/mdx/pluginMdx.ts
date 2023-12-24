@@ -41,5 +41,5 @@ export async function pluginMdxRollup(): Promise<Plugin> {
         { highlighter: await shiki.getHighlighter({ theme: 'nord' }) }
       ]
     ]
-  });
+  }) as any;
 }

@@ -47,6 +47,7 @@ export class RouteService {
 
   async init() {
     // 使用fast-flob扫描文件夹
+    console.log(this.#scanDir);
     const files = fastGlob
       .sync(['**/*.{js,jsx,ts,tsx,md,mdx}'], {
         cwd: this.#scanDir,

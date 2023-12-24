@@ -22,7 +22,7 @@ interface ChildNode {
 export const tocComponents: Plugin<[], Root> = () => {
   return (tree) => {
     const toc: TocItem[] = [];
-    visit(tree, 'heading', (node) => {
+    visit(tree, 'heading', (node: any) => {
       if (!node.depth || !node.children) {
         return;
       }
