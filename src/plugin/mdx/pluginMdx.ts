@@ -10,13 +10,15 @@ import remarkPluginFrontmatter from 'remark-frontmatter';
 import { changeCode } from './changeCode';
 import { hightlighter } from './highLight';
 import shiki from 'shiki';
+import { tocComponents } from './toc';
 
 export async function pluginMdxRollup(): Promise<Plugin> {
   return pluginMdx({
     remarkPlugins: [
       remarkPluginGFM, // 支持表格
       remarkPluginFrontmatter, // 支持frontmatter
-      [remarkPluginMDXFrontMatter, { name: 'frontmatter' }] // 支持frontmatter，数据结构变平
+      [remarkPluginMDXFrontMatter, { name: 'frontmatter' }], // 支持frontmatter，数据结构变平
+      tocComponents
     ],
     rehypePlugins: [
       rehypePluginSlug, //添加id属性
@@ -39,5 +41,5 @@ export async function pluginMdxRollup(): Promise<Plugin> {
         { highlighter: await shiki.getHighlighter({ theme: 'nord' }) }
       ]
     ]
-  }) as unknown as Plugin;
+  });
 }
