@@ -5,7 +5,14 @@ declare module 'virtual:fishDocs/config' {
 }
 
 declare module 'virtual:fishDocs/routes' {
-  import { RouteObject } from 'react-router-dom';
-  const routes: RouteObject[];
+  import type { PageModule } from 'shared/types';
+  export interface Route {
+    path: string;
+    element: React.ReactElement;
+    filePath: string;
+    preload: () => Promise<PageModule>;
+  }
+
+  const routes: Route[];
   export { routes };
 }

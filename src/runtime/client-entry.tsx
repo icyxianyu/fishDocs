@@ -1,18 +1,21 @@
 import { createRoot } from 'react-dom/client';
-import { App } from '../theme-default/APP';
-import config from 'virtual:fishDocs/config';
+import { App, initPageData } from '../theme-default/APP';
 import { BrowserRouter } from 'react-router-dom';
+import { PagtContext } from './hooks';
 
-function renderInBrowser() {
+async function renderInBrowser() {
   const root = document.getElementById('root');
   if (!root) {
     throw new Error('#root not found');
   }
+  const pageData = await initPageData(location.pathname);
 
   createRoot(root).render(
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <PagtContext.Provider value={pageData}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </PagtContext.Provider>
   );
 }
 

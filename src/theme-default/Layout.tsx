@@ -1,6 +1,8 @@
 import { Content } from '../runtime/Content';
+import { usePageData } from '../runtime';
 import 'uno.css';
 export function Layout() {
+  const PageData = usePageData();
   return (
     <div>
       <h1 p="2" m="4">
