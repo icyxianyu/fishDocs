@@ -1,0 +1,34 @@
+:root {
+    --fishdocs-font-color: #334155;
+    --fishdocs-background-color: #fff;
+}
+
+html.dark {
+    --fishdocs-font-color: #fff;
+    --fishdocs-background-color: #0f172a;
+}
+
+* {
+    transition: all 0.2s;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:visited {
+    color: var(--fishdocs-font-color);
+}
+
+a:hover {
+    opacity: 0.6;
+}
+
+.fish-header-nav {
+    background-color: var(--fishdocs-background-color);
+}
