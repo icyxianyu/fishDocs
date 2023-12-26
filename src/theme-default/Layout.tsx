@@ -1,4 +1,3 @@
-import { Content } from '../runtime/Content';
 import { usePageData } from '../runtime';
 import { Nav } from './components/Nav';
 import { Home } from './components/Home';
@@ -6,16 +5,16 @@ import { Home } from './components/Home';
 import './styles/index.css';
 import './styles/switch.css';
 import 'uno.css';
+import { DocLayout } from './components/DocLayout';
 
 export function Layout() {
   const PageData = usePageData();
   const { pageType } = PageData;
-  console.log('pageType', pageType);
   const getContent = () => {
     if (pageType === 'home') {
       return <Home />;
     } else if (pageType === 'doc') {
-      return <div>doc</div>;
+      return <DocLayout />;
     } else if (pageType === 'custom') {
       return <div>custom</div>;
     } else {

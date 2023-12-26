@@ -10,12 +10,13 @@ export function App() {
 
 export async function initPageData(pathname: string): Promise<PageData> {
   const matched = matchRoutes(routes, pathname);
-
+  console.log(routes, pathname);
   if (matched) {
     // Preload route component
     const moduleInfo = await matched[0].route.preload();
+
     return {
-      pageType: moduleInfo.frontmatter.pageType ?? 'doc',
+      pageType: moduleInfo.frontmatter?.pageType ?? 'doc',
       siteData,
       frontmatter: moduleInfo.frontmatter,
       pagePath: pathname

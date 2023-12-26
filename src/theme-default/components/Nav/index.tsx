@@ -20,7 +20,7 @@ export const Nav = () => {
       fixed="~"
       pos="t-0 l-0"
       w="full"
-      className="font-bold text-decoration z-10"
+      className="font-bold text-decoration z-10 fish-nav"
     >
       <div
         flex="~"
