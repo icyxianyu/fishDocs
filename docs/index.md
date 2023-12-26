@@ -2,19 +2,19 @@
 pageType: home
 
 hero:
-  name: Island
+  name: FishDocs
   text: 基于 Vite & MDX 语法的静态站点生成器
   tagline: 简单、强大、高性能的现代化 SSG 方案
   image:
-    src: /island.png
-    alt: Island
+    src: /logo.png
+    alt: FishDocs
   actions:
     - theme: brand
       text: 快速开始
-      link: /zh/guide/getting-started
+      link: /
     - theme: alt
       text: GitHub 地址
-      link: https://github.com/sanyuan0704/island
+      link: /
 
 features:
   - title: 'Vite: 极速的开发响应速度'
@@ -33,7 +33,7 @@ features:
     details: 使用 TypeScript 编写，提供了优秀的类型支持，让你的开发更加顺畅。
     icon: 🔑
   - title: '扩展性强: 提供多种自定义能力'
-    details: 通过其扩展机制，你可以轻松的扩展 Island 的主题 UI 和构建能力。
+    details: 通过其扩展机制，你可以轻松的扩展 FishDocs 的主题 UI 和构建能力。
     icon: 🎨
 ---
 

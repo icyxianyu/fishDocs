@@ -53,14 +53,6 @@ export interface Header {
   depth: number;
 }
 
-export interface FrontMatter {
-  title?: string;
-  description?: string;
-  pageType?: PageType;
-  sidebar?: boolean;
-  outline?: boolean;
-}
-
 export interface PageData {
   siteData: UserConfig;
   pagePath: string;
@@ -75,4 +67,35 @@ export interface PageModule {
   default: ComponentType;
   frontmatter?: FrontMatter;
   [key: string]: unknown;
+}
+
+export interface FrontMatter {
+  title?: string;
+  description?: string;
+  pageType?: PageType;
+  sidebar?: boolean;
+  outline?: boolean;
+  hero?: Hero;
+  features?: Feature[];
+}
+
+export interface Feature {
+  icon: string;
+  title: string;
+  details: string;
+}
+
+export interface Hero {
+  name: string;
+  text: string;
+  tagline: string;
+  image?: {
+    src: string;
+    alt: string;
+  };
+  actions: {
+    text: string;
+    link: string;
+    theme: 'brand' | 'alt';
+  }[];
 }

@@ -1,34 +1,60 @@
 :root {
     --fishdocs-font-color: #334155;
     --fishdocs-background-color: #fff;
+    --fishdocs-button: #ebebef;
+    --fishdocs-button-active: #506e10;
+    --fishdocs-card-background: #f6f6f7;
 }
 
-html.dark {
-    --fishdocs-font-color: #fff;
-    --fishdocs-background-color: #0f172a;
+html.dark,
+.single-dark {
+    --fishdocs-font-color: #dfdfd6;
+    --fishdocs-background-color: #1b1b1f;
+    --fishdocs-button: #32363f;
+    --fishdocs-button-active: #acd268;
+    --fishdocs-card-background: #202127;
 }
 
 * {
-    transition: all 0.2s;
+    /* transition: all 0.1s; */
 }
 
 body {
     padding: 0;
     margin: 0;
+    width: 100vw;
+    height: 100vh;
+    color: var(--fishdocs-font-color);
+    background-color: var(--fishdocs-background-color);
+
+}
+
+#root {
+    width: 100%;
+    height: 100%;
 }
 
 a {
     text-decoration: none;
-}
-
-a:visited {
     color: var(--fishdocs-font-color);
 }
+
 
 a:hover {
     opacity: 0.6;
 }
 
-.fish-header-nav {
-    background-color: var(--fishdocs-background-color);
+.fish-button-group:first-child .fish-button {
+    background-color: var(--fishdocs-button-active);
+}
+
+.fish-button {
+    height: 100%;
+    border-radius: 50%;
+    background-color: var(--fishdocs-button);
+    font-weight: bold;
+}
+
+.fish-card {
+    background-color: var(--fishdocs-card-background);
 }

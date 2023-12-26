@@ -1,8 +1,9 @@
 import { normalizePath, PluginOption } from 'vite';
 import { SiteConfig } from '../shared/types/index';
 import { ROOTROAD } from '../constants';
-import { join } from 'path';
-
+import path, { join } from 'path';
+import sirv from 'sirv';
+import fs from 'fs-extra';
 const SITE_DATA_ID = 'virtual:fishDocs/config';
 
 export function pluginConfig(
@@ -41,6 +42,12 @@ export function pluginConfig(
           }
         }
       };
+    },
+    configureServer(server) {
+      const publicDir = path.join(config.root, 'public');
+      if (fs.pathExistsSync(publicDir)) {
+        server.middlewares.use(sirv(publicDir));
+      }
     }
   };
 }

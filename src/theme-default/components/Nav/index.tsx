@@ -20,12 +20,14 @@ export const Nav = () => {
       fixed="~"
       pos="t-0 l-0"
       w="full"
-      className="font-bold text-decoration 
-      border-b-solid border-gray-200 border-b-1
-      z-10 fish-header-nav
-      "
+      className="font-bold text-decoration z-10"
     >
-      <div flex="~" items="center" justify="between" className="px-8 h-14">
+      <div
+        flex="~"
+        items="center"
+        justify="between"
+        className="px-8 h-14 max-w-screen-2xl m-auto"
+      >
         <div>
           <a
             href="/"
