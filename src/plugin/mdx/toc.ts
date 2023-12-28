@@ -5,8 +5,6 @@ import { Root } from 'hast';
 import type { MdxjsEsm } from 'mdast-util-mdxjs-esm';
 import { parse } from 'acorn';
 
-const slugger = new Slugger();
-
 interface TocItem {
   id: string;
   text: string;
@@ -22,6 +20,7 @@ interface ChildNode {
 export const tocComponents: Plugin<[], Root> = () => {
   return (tree) => {
     const toc: TocItem[] = [];
+    const slugger = new Slugger();
     visit(tree, 'heading', (node: any) => {
       if (!node.depth || !node.children) {
         return;

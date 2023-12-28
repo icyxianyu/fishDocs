@@ -5,7 +5,7 @@ import { Content } from '../../../runtime';
 import { Aside } from '../Aside';
 
 export function DocLayout() {
-  const { siteData, toC } = usePageData();
+  const { siteData, toc } = usePageData();
   const { pathname } = useLocation();
   const sidebarData = siteData.themeConfig.sidebar || {};
   const matchedSidebarKey = Object.keys(sidebarData).find((key) => {
@@ -13,9 +13,7 @@ export function DocLayout() {
       return true;
     }
   });
-  console.log('matchedSidebarKey', matchedSidebarKey, sidebarData);
   const matchedSidebar = sidebarData[matchedSidebarKey] || [];
-
   return (
     <div className="h-full flex">
       <Sidebar item={matchedSidebar} pathname={pathname}></Sidebar>
@@ -23,7 +21,7 @@ export function DocLayout() {
         <Content></Content>
       </div>
       <div>
-        <Aside />
+        <Aside headers={toc} />
       </div>
     </div>
   );

@@ -84,19 +84,33 @@ a:hover {
 }
 
 .fish-content {
-    
+    margin-right: max(256px, calc(256px + (100vw - 1536px) / 2)) !important;
     margin-left: max(256px, calc(256px + (100vw - 1536px) / 2)) !important;
     width: calc(100vw - max(256px, calc(256px + (100vw - 1536px) / 2)));
 }
 
+.fish-toc {
+    top: 128px;
+    right: max(32px, calc(32px + (100vw - 1536px) / 2)) !important;
+    padding-left: 20px;
+    border-left: 2px solid #ccc
+}
 
+p code {
+    font-weight: bold;
+    /* 倾斜 */
+
+    font-size: 20px;
+    padding: 0px 5px;
+}
 
 pre {
     width: 100%;
     margin-top: 0px !important;
 }
 
-code {
+
+.shiki code {
     display: inline-block;
     width: 100%;
     word-wrap: break-word;

@@ -6,7 +6,6 @@ interface Props {
 }
 
 export const Sidebar = ({ item, pathname }: Props) => {
-  console.log(item, pathname);
   const renderGroupItem = (item: SidebarItem) => {
     const active = item.link === pathname;
     return (

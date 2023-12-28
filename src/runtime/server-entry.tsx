@@ -1,12 +1,17 @@
 import { renderToString } from 'react-dom/server';
-import { App } from '../theme-default/APP';
+import { App, initPageData } from '../theme-default/APP';
 import { StaticRouter } from 'react-router-dom/server';
+import { PagtContext } from './hooks';
 
-export function renderInNode(pagtPath: string) {
+export async function renderInNode(pagePath: string) {
+  const pageData = await initPageData(pagePath);
+
   return renderToString(
-    <StaticRouter location={pagtPath}>
-      <App />
-    </StaticRouter>
+    <PagtContext.Provider value={pageData}>
+      <StaticRouter location={pagePath}>
+        <App />
+      </StaticRouter>
+    </PagtContext.Provider>
   );
 }
 
