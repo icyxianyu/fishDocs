@@ -46,8 +46,7 @@ export const tocComponents: Plugin<[], Root> = () => {
         });
       }
     });
-    const insertCode = `export const toc = ${JSON.stringify(toc)};`;
-
+    const insertCode = `export const toc = ${JSON.stringify(toc, null, 2)};`;
     // 根节点插入toc擦肩
     tree.children.push({
       type: 'mdxjsEsm',

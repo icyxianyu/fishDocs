@@ -9,7 +9,6 @@ export const changeCode: Plugin<[], Root> = () => {
     visit(tree, 'element', (node) => {
       // <pre><code>...</code></pre>
       // 1. 找到 pre 元素
-      console.log(node);
       if (
         node.tagName === 'pre' &&
         node.children[0]?.type === 'element' &&

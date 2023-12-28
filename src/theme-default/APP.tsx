@@ -19,6 +19,7 @@ export async function initPageData(pathname: string): Promise<PageData> {
       pageType: moduleInfo.frontmatter?.pageType ?? 'doc',
       siteData,
       frontmatter: moduleInfo.frontmatter,
+      toc: moduleInfo.toc,
       pagePath: pathname
     };
   }
