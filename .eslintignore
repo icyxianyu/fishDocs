@@ -7,3 +7,5 @@ bin
 esm-cjs
 docs
 build
+vendors
+src/preBundle.ts

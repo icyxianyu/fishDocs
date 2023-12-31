@@ -15,3 +15,5 @@ export const TEMPLATEPATH = path.join(ROOTROAD, 'template.html');
 export const CLIENTENTRY = path.join(SRCPATH, 'runtime', 'client-entry.tsx');
 
 export const SERVERENTRY = path.join(SRCPATH, 'runtime', 'server-entry.tsx');
+
+export const SPLITTER = '!!ISLAND!!';

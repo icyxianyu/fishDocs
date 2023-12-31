@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Header } from 'shared/types';
+import { Header, PropsWithIsland } from 'shared/types';
 import { useHeaders } from '../../useHeaders';
 
 interface AsideProps {
   headers: Header[];
 }
-export function Aside({ headers = [] }: AsideProps) {
+export function Aside({ headers = [] }: AsideProps & PropsWithIsland) {
   const asyncHeader = useHeaders(headers);
 
   const fontSize = (depth) => {

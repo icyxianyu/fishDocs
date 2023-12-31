@@ -3,7 +3,6 @@ import { build } from './build';
 import { createDevServer } from './dev';
 import { resolveConfig } from './config';
 import { resolve } from 'path';
-
 // 创建一个 cli 实例, 并定义版本号和帮助信息
 const cli = cac('island').version('0.0.1').help();
 

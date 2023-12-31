@@ -1,7 +1,7 @@
 import { usePageData } from '../../../runtime';
-import { NavItemWithLink } from 'shared/types';
+import { NavItemWithLink, PropsWithIsland } from 'shared/types';
 import { Switch } from './Switch';
-export const MenuItem = (item: NavItemWithLink) => {
+export const MenuItem = ({ item }: { item: NavItemWithLink }) => {
   return (
     <div className="px-1 text-sm max-3">
       <a className="no-underline" href={item.link}>
@@ -11,7 +11,7 @@ export const MenuItem = (item: NavItemWithLink) => {
   );
 };
 
-export const Nav = () => {
+export const Nav = ({ __island }: PropsWithIsland) => {
   const { siteData } = usePageData();
   const { nav = [] } = siteData.themeConfig ?? {};
 
@@ -39,7 +39,7 @@ export const Nav = () => {
 
         <div flex="~" className="items-center">
           {nav.map((item) => (
-            <MenuItem {...item} key={item.text} />
+            <MenuItem item={item} key={item.text} />
           ))}
           <Switch />
         </div>

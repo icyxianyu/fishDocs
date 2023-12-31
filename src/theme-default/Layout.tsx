@@ -23,7 +23,7 @@ export function Layout() {
   };
   return (
     <>
-      <Nav />
+      <Nav __island />
       <div className="pt-14">{getContent()}</div>
     </>
   );

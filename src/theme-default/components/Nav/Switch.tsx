@@ -29,8 +29,8 @@ export const Switch = () => {
     <SwitchComponent
       onChange={onChange}
       defaultChecked={checked}
-      checkedChildren="☀"
-      unCheckedChildren="🌙"
+      checkedChildren="🌙"
+      unCheckedChildren="☀"
     />
   );
 };
