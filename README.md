@@ -1,4 +1,4 @@
-# isLand
+
 运行方法
 
 npm i fishDocs
