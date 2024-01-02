@@ -15,6 +15,7 @@ import { VitePlugin } from '../plugin/pluginConfig';
 import { RouteObject } from 'react-router-dom';
 import { RenderResult } from 'runtime/server-entry';
 import type { RollupOutput } from 'rollup';
+import { HelmetData } from 'react-helmet-async';
 
 export const EXTERNALS = [
   'react',
@@ -139,7 +140,7 @@ const normalizeVendorFilename = (fileName: string) =>
   fileName.replace(/\//g, '_') + '.js';
 
 export const renderPage = async (
-  render: (url: string) => Promise<RenderResult>,
+  render: (url: string, helmetContext: object) => Promise<RenderResult>,
   routes: RouteObject[],
   root: string,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -153,61 +154,71 @@ export const renderPage = async (
   return Promise.all(
     routes.map(async (route) => {
       const path = route.path;
-      const { appHTML, islandToPathMap, islandProps = [] } = await render(path);
-      console.log(islandToPathMap, islandProps);
+      const helmetContext = {
+        context: {}
+      } as HelmetData;
+      const {
+        appHTML,
+        islandToPathMap,
+        islandProps = []
+      } = await render(path, helmetContext.context);
       // 获取css资源
+      const { helmet } = helmetContext.context;
+
       const styleAssets = clientBundle.output.filter(
         (chunk) => chunk.type === 'asset' && chunk.fileName.endsWith('.css')
       );
       const bundle = await buildIsland(root, islandToPathMap);
-      // console.log(bundle);
-      // const code = (bundle as RollupOutput).output[0].code;
+      const code = (bundle as RollupOutput).output[0].code;
 
-      //     const html = `
-      //       <!DOCTYPE html>
-      //       <html>
-      //       <head>
-      //           <meta charset="utf-8">
-      //           <meta name="viewport" content="width=device-width,initial-scale=1">
-      //           <title>title</title>
-      //           <meta name="description" content="xxx">
-      //           ${
-      //             styleAssets.length
-      //               ? styleAssets
-      //                   .map(
-      //                     (asset) =>
-      //                       `<link rel="stylesheet" href="/${asset.fileName}">`
-      //                   )
-      //                   .join('\n')
-      //               : ''
-      //           }
-      //           <script type="importmap">
-      //           {
-      //             "imports": {
-      //               ${EXTERNALS.map(
-      //                 (name) => `"${name}": "/${normalizeVendorFilename(name)}"`
-      //               ).join(',')}
-      //             }
-      //           }
-      //         </script>
-      //       </head>
-      //       <body>
-      //           <div id="root">${appHTML}</div>
-      //           <script type="module" >${code}</script>
-      //           <script type="module" src="/${clientChunk?.fileName}"></script>
-      //           <script id="island-props" type="application/json">${JSON.stringify(
-      //             islandProps
-      //           )}</script>
-      //       </body>
-      //       </html>
-      //  `.trim();
+      const html = `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width,initial-scale=1">
+                ${helmet?.title?.toString() || ''}
+                ${helmet?.meta?.toString() || ''}
+                ${helmet?.link?.toString() || ''}
+                ${helmet?.style?.toString() || ''}
+                <meta name="description" content="xxx">
+                ${
+                  styleAssets.length
+                    ? styleAssets
+                        .map(
+                          (asset) =>
+                            `<link rel="stylesheet" href="/${asset.fileName}">`
+                        )
+                        .join('\n')
+                    : ''
+                }
+                <script type="importmap">
+                {
+                  "imports": {
+                    ${EXTERNALS.map(
+                      (name) => `"${name}": "/${normalizeVendorFilename(name)}"`
+                    ).join(',')}
+                  }
+                }
+              </script>
+            </head>
+            <body>
+                <div id="root">${appHTML}</div>
+                <script type="module" >${code}</script>
+                <script type="module" src="/${clientChunk?.fileName}"></script>
+                <script id="island-props" type="application/json">${JSON.stringify(
+                  islandProps
+                )}</script>
+            </body>
+            </html>
+       `.trim();
 
-      //     const fileName = path.endsWith('/')
-      //       ? `${path}index.html`
-      //       : `${path}.html`;
+      const fileName = path.endsWith('/')
+        ? `${path}index.html`
+        : `${path}.html`;
 
-      //     await fs.ensureDir(join(root, 'build', dirname(fileName)));
-      //     await fs.writeFile(join(root, 'build', fileName), html);
+      await fs.ensureDir(join(root, 'build', dirname(fileName)));
+      await fs.writeFile(join(root, 'build', fileName), html);
     })
   );
 };

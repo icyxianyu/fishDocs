@@ -10,6 +10,7 @@ const originJsxs = jsxRuntime.jsxs;
 const internalJsx = function (jsx, type, props, ...args) {
   if (props && props.__island) {
     data.islandProps.push(props);
+
     const id = type.name;
     data.islandToPathMap[id] = props.__island;
 

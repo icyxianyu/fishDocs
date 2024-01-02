@@ -3,7 +3,7 @@ import Slugger from 'github-slugger';
 import { visit } from 'unist-util-visit';
 import { Root } from 'hast';
 import type { MdxjsEsm } from 'mdast-util-mdxjs-esm';
-import { parse } from 'acorn';
+import { Program, parse } from 'acorn';
 
 interface TocItem {
   id: string;
@@ -21,9 +21,13 @@ export const tocComponents: Plugin<[], Root> = () => {
   return (tree) => {
     const toc: TocItem[] = [];
     const slugger = new Slugger();
+    let title = '';
     visit(tree, 'heading', (node: any) => {
       if (!node.depth || !node.children) {
         return;
+      }
+      if (node.depth === 1) {
+        title = (node.children[0] as ChildNode).value;
       }
       // h2 ~ h4
       if (node.depth > 1 && node.depth < 5) {
@@ -57,5 +61,20 @@ export const tocComponents: Plugin<[], Root> = () => {
         })
       }
     } as MdxjsEsm);
+
+    if (title) {
+      const insertedTitle = `export const title = '${title}';`;
+
+      tree.children.push({
+        type: 'mdxjsEsm',
+        value: insertedTitle,
+        data: {
+          estree: parse(insertedTitle, {
+            ecmaVersion: 2020,
+            sourceType: 'module'
+          }) as unknown as Program
+        }
+      } as MdxjsEsm);
+    }
   };
 };

@@ -1,4 +1,5 @@
 import { createRoot, hydrateRoot } from 'react-dom/client';
+import { HelmetProvider } from 'react-helmet-async';
 import { App, initPageData } from '../theme-default/APP';
 import { BrowserRouter } from 'react-router-dom';
 import { PagtContext } from './hooks';
@@ -18,11 +19,13 @@ async function renderInBrowser() {
   const pageData = await initPageData(location.pathname);
   if (import.meta.env.DEV) {
     createRoot(root).render(
-      <PagtContext.Provider value={pageData}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </PagtContext.Provider>
+      <HelmetProvider>
+        <PagtContext.Provider value={pageData}>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </PagtContext.Provider>
+      </HelmetProvider>
     );
   } else {
     const islands = document.querySelectorAll('[__island]');

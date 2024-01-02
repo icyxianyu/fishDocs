@@ -54,6 +54,7 @@ export interface Header {
 }
 
 export interface PageData {
+  title: string;
   siteData: UserConfig;
   pagePath: string;
   frontmatter: FrontMatter;
@@ -64,6 +65,7 @@ export interface PageData {
 import { ComponentType } from 'react';
 
 export interface PageModule {
+  title?: string;
   default: ComponentType;
   frontmatter?: FrontMatter;
   toc?: Header[];

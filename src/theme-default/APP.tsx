@@ -18,13 +18,15 @@ export async function initPageData(pathname: string): Promise<PageData> {
       siteData,
       frontmatter: moduleInfo.frontmatter,
       toc: moduleInfo.toc,
-      pagePath: pathname
+      pagePath: pathname,
+      title: moduleInfo.title
     };
   }
   return {
     pageType: '404',
     siteData,
     pagePath: pathname,
-    frontmatter: {}
+    frontmatter: {},
+    title: '404'
   };
 }

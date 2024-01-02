@@ -25,7 +25,6 @@ export function pluginConfig(
     // 监听配置文件的变化
     async handleHotUpdate(ctx) {
       const path = [normalizePath(config.configPath)];
-      console.log(path);
       const include = (id: string) => path.some((p) => id.includes(p));
       if (include(ctx.file)) {
         console.log('config文件修改');
