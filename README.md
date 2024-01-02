@@ -1,8 +1,8 @@
 # isLand
 运行方法
 
-先 `pnpm install` 安装依赖,在使用 `npm link` 将island链接到全局
+npm i fishDocs
 
-然后 `pnpm start` 开启tsc监听 会产生dist文件夹
+创建好可用的文件目录后使用 `fishDocs dev xxx` (你md的目录名)即可预览文件效果
 
-最后 `island dev` 即可运行  
+打包命令 `fishDocs build xxx`

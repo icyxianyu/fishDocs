@@ -1,13 +1,15 @@
 {
-  "name": "isLand",
-  "version": "1.0.0",
+  "name": "fishDocs",
+  "version": "0.0.0",
   "description": "",
   "keywords": [],
   "license": "ISC",
   "author": "",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "bin": {
-    "island": "bin/island.js"
+    "fishDocs": "bin/fishDocs.js"
   },
   "scripts": {
     "build": "tsup && pnpm build:deps",
@@ -23,6 +25,16 @@
       "npm run lint"
     ]
   },
+  "files": [
+    "dist",
+    "bin",
+    "README.md",
+    "src/runtime",
+    "src/theme-default",
+    "src/shared",
+    "src/plugin",
+    "src/node"
+  ],
   "dependencies": {
     "@babel/core": "^7.23.7",
     "@babel/helper-plugin-utils": "^7.22.5",
